@@ -1,9 +1,5 @@
 services:
   backend:
-    environment:
-      NODE_ENV: development
-      PORT: 3000
-      
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -11,15 +7,32 @@ services:
     image: shop-backend
     container_name: backend
 
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
     ports:
       - "3000:3000"
 
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGO_URI: mongodb://mongodb:27017/shop_sphere
+
     depends_on:
       - mongodb
-      
+
+    command: npm run dev
+
   mongodb:
     image: mongo:8
     container_name: shop-mongodb
 
     ports:
       - "27017:27017"
+
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

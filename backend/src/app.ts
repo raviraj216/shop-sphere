@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import mongoose from "mongoose";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.get("/api/v1/health", (req, res) => {
     return res.status(200).json({
         success: true,
         message: "API is running",
+        database:  mongoose.connection.readyState === 1 ? "Connected"  : "Disconnected"
     });
 });
 
