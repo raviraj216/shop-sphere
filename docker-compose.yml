@@ -1,0 +1,25 @@
+services:
+  backend:
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    image: shop-backend
+    container_name: backend
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - mongodb
+      
+  mongodb:
+    image: mongo:8
+    container_name: shop-mongodb
+
+    ports:
+      - "27017:27017"
