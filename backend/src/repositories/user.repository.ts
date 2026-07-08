@@ -16,7 +16,7 @@ export class UserRepository {
     async update(id: string, data: any) {
         return await User.findByIdAndUpdate(id, data, {
             new: true,
-            runValidators: true
+            runValidators: true,
         });
     }
 

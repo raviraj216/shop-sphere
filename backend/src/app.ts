@@ -10,7 +10,6 @@ import { errorHandler } from "./middleware/error-handler";
 
 const app = express();
 
-
 app.use(cors());
 
 app.use(helmet());
@@ -26,11 +25,10 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRoutes);
 
 app.get("/api/v1/health", (req, res) => {
-     console.log(req.method, req.originalUrl);
     return res.status(200).json({
         success: true,
         message: "API is running",
-        database:  mongoose.connection.readyState === 1 ? "Connected"  : "Disconnected"
+        database: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
     });
 });
 
