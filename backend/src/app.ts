@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 app.get("/api/v1/health", (req, res) => {
     return res.status(200).json({
         success: true,
-        message: "API is running"
+        message: "API is running",
     });
 });
 
