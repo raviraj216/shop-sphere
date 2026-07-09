@@ -1,37 +1,106 @@
-import { Schema, model } from "mongoose";
+import { HydratedDocument, Model, Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 
+export interface IUser {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+}
 
-const userSchema = new Schema(
-    {
-        firstName: {
-            type: String,
-            required: true,
-            trim: true,
-        },
+export interface IUserMethods {
+    comparePassword(password: string): Promise<boolean>;
+}
 
-        lastName: {
-            type: String,
-            required: true,
-            trim: true,
-        },
+type UserModel = Model<IUser, {}, IUserMethods>;
 
-        email: {
-            type: String,
-            required: true,
-            unique: true,
-            lowercase: true,
-            trim: true,
-        },
-
-        password: {
-            type: String,
-            required: true,
-            minlength: 6,
-        },
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
+    firstName: {
+        type: String,
+        required: true
     },
-    {
-        timestamps: true,
+    lastName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
     }
-);
+});
 
-export const User = model("User", userSchema);
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) {
+        return;
+    }
+
+    this.password = await bcrypt.hash(this.password, 10);
+});
+
+userSchema.methods.comparePassword = async function (password: string) {
+    return bcrypt.compare(password, this.password);
+};
+
+export const User = model<IUser, UserModel>("User", userSchema);
+
+export type UserDocument = HydratedDocument<IUser, IUserMethods>;
+
+
+//old type declaration
+// import { Schema, model } from "mongoose";
+
+// import bcrypt from "bcrypt";
+
+// const userSchema = new Schema(
+//     {
+//         firstName: {
+//             type: String,
+//             required: true,
+//             trim: true,
+//         },
+
+//         lastName: {
+//             type: String,
+//             required: true,
+//             trim: true,
+//         },
+
+//         email: {
+//             type: String,
+//             required: true,
+//             unique: true,
+//             lowercase: true,
+//             trim: true,
+//         },
+
+//         password: {
+//             type: String,
+//             required: true,
+//             minlength: 6,
+//         },
+//     },
+//     {
+//         timestamps: true,
+//     }
+// );
+ 
+// userSchema.pre("save", async function () {
+//     if (!this.isModified("password")) {
+//         return;
+//     }
+
+//     this.password = await bcrypt.hash(this.password, 10);
+// });
+
+// userSchema.methods.comparePassword = async function (
+//     password: string
+// ) {
+//     return bcrypt.compare(password, this.password);
+// };
+
+// export const User = model("User", userSchema);

@@ -23,4 +23,8 @@ export class UserRepository {
     async delete(id: string) {
         return await User.findByIdAndDelete(id);
     }
+
+    async findByEmail(email: string) {
+        return await User.findOne({ email });
+    }
 }
