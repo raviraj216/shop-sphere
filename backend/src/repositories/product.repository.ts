@@ -176,6 +176,13 @@ import { AppError } from "../utils/app-error";
     }
 
     async findById(id: string) {
-        return Product.findById(id).populate("category");
+        //return Product.findById(id).populate("category");
+
+        return Product.findOne({
+            _id: id,
+            deletedAt: null,
+            isActive: true
+        }).populate("category");;
+
     }
 }
