@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import uploadRoutes from "./routes/upload.routes";
+import path from "path";
 
 
 import { notFound } from "./middleware/not-found";
@@ -29,6 +31,10 @@ app.use("/api/v1/users", userRoutes);
 
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/upload", uploadRoutes);
+
+
+app.use( "/uploads", express.static(path.join(process.cwd(),"uploads")));
 
 app.get("/api/v1/health", (req, res) => {
     return res.status(200).json({

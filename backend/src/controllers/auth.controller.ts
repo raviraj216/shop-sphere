@@ -37,4 +37,34 @@ export class AuthController {
             )
         );
     });
+
+     refreshToken = asyncHandler(async (req, res) => {
+
+        const token = await authService.refreshToken(
+            req.body.refreshToken
+        );
+
+        return res.json(
+            ApiResponse.success(
+                token,
+                "Token refreshed successfully"
+            )
+        );
+
+    });
+
+    logout = asyncHandler(async (req, res) => {
+
+        await authService.logout(
+            req.body.refreshToken
+        );
+
+        return res.json(
+            ApiResponse.success(
+                null,
+                "Logout successful"
+            )
+        );
+
+    });
 }

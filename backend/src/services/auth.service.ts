@@ -1,6 +1,6 @@
 import { jwt } from "zod";
 import { UserRepository } from "../repositories/user.repository";
-import { generateToken } from "../utils/jwt";
+import { generateAccessToken,generateRefreshToken ,verifyRefreshToken} from "../utils/jwt";
 import { AppError } from "../utils/app-error";
 import { User } from "../models/user.model";
 
@@ -9,8 +9,16 @@ export class AuthService {
 
     async register(data: any) {
         const user = await this.repository.create(data);
-        const token = generateToken(user.id);
-        return { user, token };
+        const accessToken = generateAccessToken({
+            id: user.id,
+            role: user.role
+        });
+
+        const refreshToken = generateRefreshToken(
+            user.id
+        );
+        
+        return {  user, accessToken, refreshToken };
     }
 
     async login(email: string, password: string) {
@@ -26,11 +34,55 @@ export class AuthService {
             throw new AppError("Invalid email or password", 401);
         }
 
-        const token = generateToken(user.id);
+        const accessToken = generateAccessToken({
+            id: user.id,
+            role: user.role
+        });
+
+        const refreshToken = generateRefreshToken(
+            user.id
+        );
 
         return {
             user,
-            token
+            accessToken,
+            refreshToken
         };
+    }
+
+    async refreshToken(refreshToken: string) {
+
+        if (!refreshToken) {
+            throw new AppError(
+                "Refresh token is required",
+                400
+            );
+        }
+
+        const payload = verifyRefreshToken(refreshToken);
+
+        const user = await this.repository.findById(
+            payload.userId
+        );
+
+        if (!user) {
+            throw new AppError(
+                "User not found",
+                404
+            );
+        }
+
+        const accessToken = generateAccessToken({
+            id: user.id,
+            role: user.role
+        });
+
+        return {
+            accessToken
+        };
+    }
+    
+    async logout() {
+        return true;
     }
 }

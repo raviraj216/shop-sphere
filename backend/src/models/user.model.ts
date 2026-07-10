@@ -6,6 +6,7 @@ export interface IUser {
     lastName: string;
     email: string;
     password: string;
+    role: string
 }
 
 export interface IUserMethods {
@@ -31,6 +32,11 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        enum: ["admin", "customer","manager"],
+        default: "customer"
     }
 });
 

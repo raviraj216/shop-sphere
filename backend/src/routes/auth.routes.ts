@@ -25,4 +25,16 @@ router.get(
     authenticate,
     controller.profile
 );
+
+
+router.post(
+    "/refresh-token",
+    controller.refreshToken
+);
+
+router.post(
+    "/logout",
+    controller.logout
+);
+
 export default router;
