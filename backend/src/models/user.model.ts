@@ -6,7 +6,7 @@ export interface IUser {
     lastName: string;
     email: string;
     password: string;
-    role: string
+    role: string;
 }
 
 export interface IUserMethods {
@@ -18,26 +18,26 @@ type UserModel = Model<IUser, {}, IUserMethods>;
 const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     firstName: {
         type: String,
-        required: true
+        required: true,
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     role: {
         type: String,
-        enum: ["admin", "customer","manager"],
-        default: "customer"
-    }
+        enum: ["admin", "customer", "manager"],
+        default: "customer",
+    },
 });
 
 userSchema.pre("save", async function () {
@@ -55,7 +55,6 @@ userSchema.methods.comparePassword = async function (password: string) {
 export const User = model<IUser, UserModel>("User", userSchema);
 
 export type UserDocument = HydratedDocument<IUser, IUserMethods>;
-
 
 //old type declaration
 // import { Schema, model } from "mongoose";
@@ -94,7 +93,7 @@ export type UserDocument = HydratedDocument<IUser, IUserMethods>;
 //         timestamps: true,
 //     }
 // );
- 
+
 // userSchema.pre("save", async function () {
 //     if (!this.isModified("password")) {
 //         return;

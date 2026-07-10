@@ -1,6 +1,6 @@
 import { jwt } from "zod";
 import { UserRepository } from "../repositories/user.repository";
-import { generateAccessToken,generateRefreshToken ,verifyRefreshToken} from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt";
 import { AppError } from "../utils/app-error";
 import { User } from "../models/user.model";
 
@@ -11,18 +11,15 @@ export class AuthService {
         const user = await this.repository.create(data);
         const accessToken = generateAccessToken({
             id: user.id,
-            role: user.role
+            role: user.role,
         });
 
-        const refreshToken = generateRefreshToken(
-            user.id
-        );
-        
-        return {  user, accessToken, refreshToken };
+        const refreshToken = generateRefreshToken(user.id);
+
+        return { user, accessToken, refreshToken };
     }
 
     async login(email: string, password: string) {
-
         const user = await this.repository.findByEmail(email);
 
         if (!user) {
@@ -36,52 +33,41 @@ export class AuthService {
 
         const accessToken = generateAccessToken({
             id: user.id,
-            role: user.role
+            role: user.role,
         });
 
-        const refreshToken = generateRefreshToken(
-            user.id
-        );
+        const refreshToken = generateRefreshToken(user.id);
 
         return {
             user,
             accessToken,
-            refreshToken
+            refreshToken,
         };
     }
 
     async refreshToken(refreshToken: string) {
-
         if (!refreshToken) {
-            throw new AppError(
-                "Refresh token is required",
-                400
-            );
+            throw new AppError("Refresh token is required", 400);
         }
 
         const payload = verifyRefreshToken(refreshToken);
 
-        const user = await this.repository.findById(
-            payload.userId
-        );
+        const user = await this.repository.findById(payload.userId);
 
         if (!user) {
-            throw new AppError(
-                "User not found",
-                404
-            );
+            throw new AppError("User not found", 404);
         }
 
         const accessToken = generateAccessToken({
             id: user.id,
-            role: user.role
+            role: user.role,
         });
 
         return {
-            accessToken
+            accessToken,
         };
     }
-    
+
     async logout() {
         return true;
     }

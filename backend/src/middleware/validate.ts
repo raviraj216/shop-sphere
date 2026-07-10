@@ -1,21 +1,19 @@
 import { ZodType, ZodError } from "zod";
 import { Request, Response, NextFunction } from "express";
 
-export const validate =
-  (schema: ZodType) =>
-  (req: Request, res: Response, next: NextFunction) => {
+export const validate = (schema: ZodType) => (req: Request, res: Response, next: NextFunction) => {
     try {
-      req.body = schema.parse(req.body);
-      next();
+        req.body = schema.parse(req.body);
+        next();
     } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(400).json({
-          success: false,
-          message: "Validation Failed",
-          errors: error.issues,
-        });
-      }
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                success: false,
+                message: "Validation Failed",
+                errors: error.issues,
+            });
+        }
 
-      next(error);
+        next(error);
     }
-  };
+};

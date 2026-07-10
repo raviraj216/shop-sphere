@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/app-error";
 import { verifyAccessToken } from "../utils/jwt";
 
-export function authenticate(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
+export function authenticate(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader?.startsWith("Bearer ")) {

@@ -7,64 +7,28 @@ export class AuthController {
     register = asyncHandler(async (req, res) => {
         const result = await authService.register(req.body);
 
-        return res.status(201).json(
-            ApiResponse.success(
-                result,
-                "User registered successfully"
-            )
-        );
+        return res.status(201).json(ApiResponse.success(result, "User registered successfully"));
     });
 
     login = asyncHandler(async (req, res) => {
-        const result = await authService.login(
-            req.body.email,
-            req.body.password
-        );
+        const result = await authService.login(req.body.email, req.body.password);
 
-        return res.json(
-            ApiResponse.success(
-                result,
-                "Login successful"
-            )
-        );
+        return res.json(ApiResponse.success(result, "Login successful"));
     });
 
     profile = asyncHandler(async (req, res) => {
-        return res.json(
-            ApiResponse.success(
-                req.user,
-                "Profile fetched successfully"
-            )
-        );
+        return res.json(ApiResponse.success(req.user, "Profile fetched successfully"));
     });
 
-     refreshToken = asyncHandler(async (req, res) => {
+    refreshToken = asyncHandler(async (req, res) => {
+        const token = await authService.refreshToken(req.body.refreshToken);
 
-        const token = await authService.refreshToken(
-            req.body.refreshToken
-        );
-
-        return res.json(
-            ApiResponse.success(
-                token,
-                "Token refreshed successfully"
-            )
-        );
-
+        return res.json(ApiResponse.success(token, "Token refreshed successfully"));
     });
 
     logout = asyncHandler(async (req, res) => {
+        await authService.logout(req.body.refreshToken);
 
-        await authService.logout(
-            req.body.refreshToken
-        );
-
-        return res.json(
-            ApiResponse.success(
-                null,
-                "Logout successful"
-            )
-        );
-
+        return res.json(ApiResponse.success(null, "Logout successful"));
     });
 }

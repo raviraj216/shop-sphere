@@ -1,20 +1,11 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-    firstName: z
-        .string()
-        .trim()
-        .min(2, "First name must be at least 2 characters"),
+    firstName: z.string().trim().min(2, "First name must be at least 2 characters"),
 
-    lastName: z
-        .string()
-        .trim()
-        .min(2, "Last name must be at least 2 characters"),
+    lastName: z.string().trim().min(2, "Last name must be at least 2 characters"),
 
-    email: z
-        .email("Please enter a valid email address")
-        .trim()
-        .toLowerCase(),
+    email: z.email("Please enter a valid email address").trim().toLowerCase(),
 
     password: z
         .string()
@@ -23,12 +14,7 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
-    email: z
-        .email("Please enter a valid email address")
-        .trim()
-        .toLowerCase(),
+    email: z.email("Please enter a valid email address").trim().toLowerCase(),
 
-    password: z
-        .string()
-        .min(1, "Password is required"),
+    password: z.string().min(1, "Password is required"),
 });

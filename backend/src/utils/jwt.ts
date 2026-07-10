@@ -1,4 +1,4 @@
-import jwt, { SignOptions,JwtPayload } from "jsonwebtoken";
+import jwt, { SignOptions, JwtPayload } from "jsonwebtoken";
 
 export interface AccessTokenPayload extends JwtPayload {
     userId: string;
@@ -19,43 +19,29 @@ export interface RefreshTokenPayload extends JwtPayload {
 //     );
 // }
 
-export function generateAccessToken(user: {
-    id: string;
-    role: string;
-}) {
+export function generateAccessToken(user: { id: string; role: string }) {
     return jwt.sign(
         {
             userId: user.id,
-            role: user.role
+            role: user.role,
         },
         process.env.JWT_SECRET as string,
         {
-            expiresIn: process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"]
+            expiresIn: process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"],
         }
     );
 }
 
 export function generateRefreshToken(userId: string) {
-    return jwt.sign(
-        { userId },
-        process.env.JWT_REFRESH_SECRET as string,
-        {
-            expiresIn: process.env.JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"]
-        }
-    );
+    return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET as string, {
+        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"],
+    });
 }
 
-
 export function verifyAccessToken(token: string): AccessTokenPayload {
-    return jwt.verify(
-        token,
-        process.env.JWT_SECRET!
-    ) as AccessTokenPayload;
+    return jwt.verify(token, process.env.JWT_SECRET!) as AccessTokenPayload;
 }
 
 export function verifyRefreshToken(token: string): RefreshTokenPayload {
-    return jwt.verify(
-        token,
-        process.env.JWT_REFRESH_SECRET!
-    ) as RefreshTokenPayload;
+    return jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as RefreshTokenPayload;
 }

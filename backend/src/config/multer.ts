@@ -23,29 +23,14 @@ const storage = multer.diskStorage({
     },
 
     filename(req, file, cb) {
-        const uniqueName =
-            Date.now() +
-            "-" +
-            Math.round(Math.random() * 1e9);
+        const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1e9);
 
-        cb(
-            null,
-            uniqueName + path.extname(file.originalname)
-        );
+        cb(null, uniqueName + path.extname(file.originalname));
     },
 });
 
-const fileFilter: multer.Options["fileFilter"] = (
-    req,
-    file,
-    cb
-) => {
-    const allowed = [
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-        "image/jpg",
-    ];
+const fileFilter: multer.Options["fileFilter"] = (req, file, cb) => {
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
 
     if (allowed.includes(file.mimetype)) {
         cb(null, true);
