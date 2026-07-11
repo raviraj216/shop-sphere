@@ -1,3 +1,7 @@
+export interface ProductParams {
+    productId: string;
+}
+
 export interface CartItem {
 
     product: string;

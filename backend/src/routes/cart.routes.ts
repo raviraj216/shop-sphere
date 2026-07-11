@@ -2,7 +2,7 @@ import { Router } from "express";
 import { CartController } from "../controllers/cart.controller";
 import { authenticate } from "../middleware/auth.middleware";
 import { validate } from "../middleware/validate";
-import { addToCartSchema } from "../validators/cart.validator";
+import { addToCartSchema,updateCartItemSchema } from "../validators/cart.validator";
 
 
 const router = Router();
@@ -17,6 +17,26 @@ router.get(
 
     controller.getCart
 
+);
+
+router.patch(
+    "/items/:productId",
+    authenticate,
+    validate(updateCartItemSchema),
+    controller.updateQuantity
+);
+
+router.delete(
+    "/items/:productId",
+    authenticate,
+    controller.removeItem
+);
+
+
+router.delete(
+    "/",
+    authenticate,
+    controller.clearCart
 );
 
 router.post(

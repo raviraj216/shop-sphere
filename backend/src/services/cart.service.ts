@@ -30,7 +30,8 @@ export class CartService {
 
         cart.items.forEach((item: any) => {
 
-            item.subtotal = item.price * item.quantity;
+            item.subtotal =
+                item.price * item.quantity;
 
             totalItems += item.quantity;
 
@@ -46,12 +47,16 @@ export class CartService {
 
         cart.tax = 0;
 
-        cart.shipping = 0;
+        cart.shipping = subtotal > 1000 ? 0 : 50;
 
-        cart.grandTotal = subtotal;
+        cart.grandTotal =
+            subtotal -
+            cart.discount +
+            cart.tax +
+            cart.shipping;
 
     }
-
+    
     async addToCart(
 
         userId: string,
@@ -135,6 +140,97 @@ export class CartService {
         await this.cartRepository.save(cart);
 
         return cart.populate("items.product");
+
+    }
+
+
+    async updateQuantity(
+        userId: string,
+        productId: string,
+        quantity: number
+    ) {
+
+        const cart = await this.getOrCreateCart(userId);
+
+        const item = cart.items.find(
+            (item: any) =>
+                item.product._id.toString() === productId
+        );
+
+        if (!item) {
+            throw new AppError(
+                "Item not found in cart",
+                404
+            );
+        }
+
+        const product =
+            await this.productRepository.findById(productId);
+
+        if (!product) {
+            throw new AppError(
+                "Product not found",
+                404
+            );
+        }
+
+        if (quantity > product.quantity) {
+            throw new AppError(
+                "Insufficient stock",
+                400
+            );
+        }
+
+        item.quantity = quantity;
+
+        this.calculateTotals(cart);
+
+        await this.cartRepository.save(cart);
+
+        return cart.populate("items.product");
+
+    }
+
+
+    async removeItem(
+        userId: string,
+        productId: string
+    ) {
+
+        const cart = await this.getOrCreateCart(userId);
+
+        const items = cart.items.filter(
+            (item: any) =>
+                item.product._id.toString() !== productId
+        );
+
+        cart.items = items as any;
+
+        this.calculateTotals(cart);
+
+        await this.cartRepository.save(cart);
+
+        return cart.populate("items.product");
+
+    }
+
+    async clearCart(userId: string) {
+
+        const cart = await this.getOrCreateCart(userId);
+
+        cart.items = [] as any;
+        
+        this.calculateTotals(cart);
+
+        await this.cartRepository.save(cart);
+
+        return cart;
+
+    }
+
+    async getCart(userId: string) {
+
+        return this.getOrCreateCart(userId);
 
     }
 
