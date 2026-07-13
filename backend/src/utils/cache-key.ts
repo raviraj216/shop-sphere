@@ -1,6 +1,7 @@
 export const CacheKeys = {
 
     products: "products",
+    searchProducts: (search: string) => `products:search:${search.toLowerCase()}`,
 
     product: (id: string) => `product:${id}`,
 
