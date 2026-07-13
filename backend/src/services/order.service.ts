@@ -22,8 +22,6 @@ export class OrderService {
         try {
 
            // session.startTransaction();
-            console.log("1. Checkout started");
-
             /**
              * 1. Load Cart
              */
@@ -49,11 +47,9 @@ export class OrderService {
             /**
              * 2. Validate Stock
              */
-            console.log("2. Cart loaded");
 
             for (const item of cart.items) {
 
-                console.log("3. Checking product", item.product._id);
 
                 const product =
                     await this.productRepository.findById(
@@ -81,14 +77,12 @@ export class OrderService {
                         400
                     );
                 }
-                    console.log("4. Product found");
 
             }
 
             /**
              * 3. Create Order
              */
-console.log("5. Creating order");
 
             const order = await this.orderRepository.create({
 
@@ -166,15 +160,12 @@ console.log("5. Creating order");
             await this.cartRepository.save(
                 cart
             );
-console.log("5. save card");
 
             /**
              * 6. Commit Transaction
              */
 
            // await session.commitTransaction();
-
-           console.log("order",order);
 
             return order;
 

@@ -1,6 +1,21 @@
-import { Schema, model} from "mongoose";
+import { Schema, model, HydratedDocument } from "mongoose";
 
-const productSchema = new Schema(
+export interface IProduct {
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    discountPrice: number;
+    quantity: number;
+    sku: string;
+    images: string[];
+    category: Schema.Types.ObjectId;
+    isActive: boolean;
+    deletedAt: Date | null;
+}
+
+
+const productSchema = new Schema<IProduct>(
     {
         name: {
             type: String,
@@ -75,4 +90,6 @@ productSchema.index({
 productSchema.index({ category: 1 });
 productSchema.index({ price: 1 });
  
-export const Product = model("Product", productSchema);
+export const Product = model<IProduct>("Product", productSchema);
+
+export type ProductDocument = HydratedDocument<IProduct>;

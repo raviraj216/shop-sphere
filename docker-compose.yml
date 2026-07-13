@@ -7,6 +7,9 @@ services:
     image: shop-backend
     container_name: backend
 
+    env_file:
+      - ./backend/.env
+
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -36,5 +39,19 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  redis:
+    image: redis:7
+
+    container_name: shop-sphere-redis
+
+    restart: always
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis-data:/data
+
 volumes:
   mongo-data:
+  redis-data:
