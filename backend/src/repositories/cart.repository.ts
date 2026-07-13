@@ -2,10 +2,14 @@ import { Cart } from "../models/cart.model";
 
 export class CartRepository {
 
-    async findByUser(userId: string) {
+    async findByUser(
+        userId: string,
+    ) {
 
-        return Cart.findOne({ user: userId })
-            .populate("items.product");
+        return Cart.findOne({
+            user: userId
+        })
+        .populate("items.product") ;
 
     }
 
@@ -21,9 +25,13 @@ export class CartRepository {
 
     }
 
-    async save(cart: any) {
+    async save(
+        cart: any,
+    ) {
 
-        return cart.save();
+        return cart.save({
+            cart
+        });
 
     }
 

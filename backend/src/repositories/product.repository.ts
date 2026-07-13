@@ -2,7 +2,8 @@ import { FilterQuery } from "mongoose";
 import { Product } from "../models/product.model";
 import { ProductQuery } from "../types/product-query";
 import { AppError } from "../utils/app-error";
- export class ProductRepository {
+
+export class ProductRepository {
     async create(data: any) {
         const [slugExists, skuExists] = await Promise.all([
             Product.exists({ slug: data.slug }),
@@ -185,4 +186,31 @@ import { AppError } from "../utils/app-error";
         }).populate("category");;
 
     }
+
+    async decreaseStock(
+    productId: string,
+    quantity: number,
+) {
+
+    return Product.findByIdAndUpdate(
+
+        productId,
+
+        {
+            $inc: {
+
+                quantity: -quantity
+
+            }
+
+        },
+
+        {
+           returnDocument: "after",
+           runValidators: true
+        }
+
+    );
+
+}
 }

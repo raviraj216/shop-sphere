@@ -11,6 +11,7 @@ import uploadRoutes from "./routes/upload.routes";
 import productRoutes from "./routes/product.routes";
 import categoryRoutes from "./routes/category.routes";
 import cartRoutes from "./routes/cart.routes";
+import orderRoutes from "./routes/order.routes";
 
 import { notFound } from "./middleware/not-found";
 import { errorHandler } from "./middleware/error-handler";
@@ -39,6 +40,7 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/cart", cartRoutes);
+app.use("/api/v1/orders", orderRoutes);
 
 app.get("/api/v1/health", (req, res) => {
     return res.status(200).json({
