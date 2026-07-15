@@ -15,6 +15,7 @@ export const CacheKeys = {
 
     orders: (userId: string) => `orders:${userId}`,
 
-    dashboard: "dashboard"
-
+    dashboard: "dashboard",
+    refreshToken: ( userId: string, deviceId: string ) => `refresh:${userId}:${deviceId}`,
+    rateLimit: (prefix: string,identifier: string) => `rate-limit:${prefix}:${identifier}`
 };

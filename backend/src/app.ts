@@ -15,6 +15,7 @@ import orderRoutes from "./routes/order.routes";
 
 import { notFound } from "./middleware/not-found";
 import { errorHandler } from "./middleware/error-handler";
+import { rateLimit } from "./middleware/rate-limit.middleware";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 app.use(express.json());
+
+app.use(rateLimit("api", 100, 60));
 
 app.get("/", (req, res) => {
     res.send("Welcome to Shop Sphere API 🚀");
