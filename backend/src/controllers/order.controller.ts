@@ -13,6 +13,13 @@ export class OrderController {
             req.body
             );
 
+            // await this.emailService.sendOrderConfirmation(
+            //             "tester@gmail.com",
+            //             "Rahul Patel",
+            //             "ODR-1234",
+            //             100
+            //         );
+
             return res.status(201).json(
                 ApiResponse.success(
                     order,

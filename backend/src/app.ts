@@ -16,6 +16,7 @@ import orderRoutes from "./routes/order.routes";
 import { notFound } from "./middleware/not-found";
 import { errorHandler } from "./middleware/error-handler";
 import { rateLimit } from "./middleware/rate-limit.middleware";
+import { transporter } from "./config/mail";
 
 const app = express();
 
@@ -46,6 +47,16 @@ app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/orders", orderRoutes);
 
 app.get("/api/v1/health", (req, res) => {
+
+    transporter.verify(
+        (error) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log("Mail Server Connected");
+            }
+        }
+    );
     return res.status(200).json({
         success: true,
         message: "API is running",
