@@ -38,6 +38,14 @@ const orderItemSchema = new Schema(
     }
 );
 
+export enum PaymentStatus {
+    PENDING = "PENDING",
+    PAID = "PAID",
+    FAILED = "FAILED",
+    REFUNDED = "REFUNDED",
+    Paid = "Paid"
+}
+
 const orderSchema = new Schema(
     {
         orderNumber: {
@@ -65,18 +73,23 @@ const orderSchema = new Schema(
         shipping: Number,
 
         grandTotal: Number,
-
+        stripePaymentIntentId: {
+            type: String
+        },
         status: {
             type: String,
-            enum: [
-                "Pending",
-                "Confirmed",
-                "Packed",
-                "Shipped",
-                "Delivered",
-                "Cancelled"
-            ],
-            default: "Pending"
+            // enum: [
+            //     "Pending",
+            //     "Confirmed",
+            //     "Packed",
+            //     "Shipped",
+            //     "Delivered",
+            //     "Cancelled"
+            // ],
+            // default: "Pending"
+
+            enum: Object.values(PaymentStatus),
+            default: PaymentStatus.PENDING
         },
 
         paymentStatus: {
