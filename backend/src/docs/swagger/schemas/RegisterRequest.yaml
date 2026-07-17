@@ -1,0 +1,29 @@
+components:
+    schemas:
+        RegisterRequest:
+            type: object
+            required:
+                - firstName
+                - lastName
+                - email
+                - password
+
+            properties:
+                firstName:
+                    type: string
+                    example: John
+
+                lastName:
+                    type: string
+                    example: Doe
+
+                email:
+                    type: string
+                    format: email
+                    example: john@example.com
+
+                password:
+                    type: string
+                    format: password
+                    minLength: 8
+                    example: Password@123

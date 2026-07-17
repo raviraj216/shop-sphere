@@ -8,7 +8,6 @@ import { connectDatabase } from "./database/connection";
 
 import { redisClient } from "./config/redis";
 
-
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {

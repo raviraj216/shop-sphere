@@ -4,6 +4,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
@@ -42,6 +44,8 @@ app.use(rateLimit("api", 100, 60));
 app.get("/", (req, res) => {
     res.send("Welcome to Shop Sphere API 🚀");
 });
+
+app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerSpec));
 
 app.use("/api/v1/users", userRoutes);
 
