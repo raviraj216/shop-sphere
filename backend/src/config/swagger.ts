@@ -40,11 +40,23 @@ const options: Options = {
     tags: [
 
         {
-
             name: "Authentication",
-
             description: "User Authentication APIs"
 
+        },
+        {
+            name:"Products",
+            description:"Product Management APIs"
+        },
+
+        {
+            name:"Categories",
+            description:"Category APIs"
+        },
+
+        {
+            name:"Cart",
+            description:"Shopping Cart APIs"
         }
 
     ]
