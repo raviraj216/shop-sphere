@@ -1,9 +1,48 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import "tailwindcss";
+
+:root {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+
+  --color-secondary: #64748b;
+
+  --color-success: #16a34a;
+
+  --color-danger: #dc2626;
+
+  --color-warning: #d97706;
+
+  --color-background: #ffffff;
+
+  --color-surface: #f8fafc;
+
+  --color-text: #0f172a;
+
+  --color-border: #e2e8f0;
+}
+
+.dark {
+  --color-background: #0f172a;
+
+  --color-surface: #1e293b;
+
+  --color-text: #f8fafc;
+
+  --color-border: #334155;
 }
 
 body {
-  font-family: Arial, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.dark body {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+ 
+.main-nav-bar .active {
+  color: red;
+  font-weight: bold;
 }
